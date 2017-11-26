@@ -6,6 +6,5 @@ import java.util.List;
 
 public interface CommentsCallback {
     void onSuccess(List<Comment> comments);
-
     void onFailure(Throwable t);
 }

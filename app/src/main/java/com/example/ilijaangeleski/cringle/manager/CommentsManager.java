@@ -16,7 +16,7 @@ public class CommentsManager {
         Collections.sort(commentList, new Comparator<Comment>() {
             @Override
             public int compare(Comment c1, Comment c2) {
-                return Integer.valueOf(c1.getId()).compareTo(c2.getId());
+                return Integer.valueOf(c2.getId()).compareTo(c1.getId());
             }
         });
     }

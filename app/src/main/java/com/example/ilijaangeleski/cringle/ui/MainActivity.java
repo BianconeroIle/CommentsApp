@@ -9,11 +9,15 @@ import android.widget.Toast;
 
 import com.example.ilijaangeleski.cringle.R;
 import com.example.ilijaangeleski.cringle.adapter.CommentsTabPagerAdapter;
+import com.example.ilijaangeleski.cringle.di.DaggerMainComponent;
+import com.example.ilijaangeleski.cringle.di.MainModule;
 import com.example.ilijaangeleski.cringle.model.Comment;
 import com.example.ilijaangeleski.cringle.presenter.MainPresenter;
 import com.example.ilijaangeleski.cringle.view.MainView;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,15 +30,17 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @BindView(R.id.tabs)
     TabLayout tabs;
 
+    @Inject
+    MainPresenter presenter;
     private CommentsTabPagerAdapter adapter;
-    private MainPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        presenter = new MainPresenter(this);
+
+        DaggerMainComponent.builder().mainModule(new MainModule(this)).build().inject(this);
 
         adapter = new CommentsTabPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);

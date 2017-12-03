@@ -9,8 +9,9 @@ import android.widget.Toast;
 
 import com.example.ilijaangeleski.cringle.R;
 import com.example.ilijaangeleski.cringle.adapter.CommentsTabPagerAdapter;
-import com.example.ilijaangeleski.cringle.di.DaggerMainComponent;
-import com.example.ilijaangeleski.cringle.di.MainModule;
+import com.example.ilijaangeleski.cringle.di.DaggerMainActivityComponent;
+import com.example.ilijaangeleski.cringle.di.MainActivityModule;
+import com.example.ilijaangeleski.cringle.di.MyApp;
 import com.example.ilijaangeleski.cringle.model.Comment;
 import com.example.ilijaangeleski.cringle.presenter.MainPresenter;
 import com.example.ilijaangeleski.cringle.view.MainView;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Inject
     MainPresenter presenter;
+
     private CommentsTabPagerAdapter adapter;
 
     @Override
@@ -39,9 +41,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-        DaggerMainComponent.builder().mainModule(new MainModule(this)).build().inject(this);
-
+        DaggerMainActivityComponent.builder()
+                .mainComponent(MyApp.getApp().getMainComponent())
+                .mainActivityModule(new MainActivityModule(this)).build().inject(this);
+        presenter.onViewCreated();
         adapter = new CommentsTabPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         tabs.setupWithViewPager(pager);
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.onViewCreated();
+//        presenter.onViewCreated();
     }
 
     @Override

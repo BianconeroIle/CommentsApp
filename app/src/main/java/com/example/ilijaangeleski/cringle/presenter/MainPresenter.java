@@ -22,14 +22,8 @@ public class MainPresenter {
     private MainManager mainManager;
     private WeakReference<MainView> weakMainView;
 
-    public MainPresenter(MainView view) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(NetworkApi.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        NetworkApi networkApi = retrofit.create(NetworkApi.class);
-        StorageManager storageManager = new SharedPreferencesStoreManager(view.getContext());
-        this.mainManager = new MainManager(networkApi, storageManager);
+    public MainPresenter(MainView view,MainManager mainManager) {
+        this.mainManager = mainManager;
         this.weakMainView = new WeakReference<>(view);
     }
 
